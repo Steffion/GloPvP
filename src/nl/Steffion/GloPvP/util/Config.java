@@ -11,6 +11,7 @@ import nl.Steffion.GloPvP.GloPvP;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 
 /**
  * Create and manage config files.
@@ -96,7 +97,7 @@ public class Config {
 						GloPvP.plugin.getLogger().log(
 								Level.INFO,
 								"Found missing setting: Added '" + key
-										+ "' to " + location);
+								+ "' to " + location);
 						changed = true;
 					}
 				}
@@ -137,6 +138,45 @@ public class Config {
 	}
 
 	/**
+	 * Gets the requested String by path with locale support.<br>
+	 * If the String does not exist but a default value has been specified, this
+	 * will return the default value by the default language.<br>
+	 * If the String does not exist and no default value was specified, this
+	 * will return the GB value.
+	 * 
+	 * @param player
+	 *            - The player you want the locale string from.
+	 * @param path
+	 *            - Path of the String to get.
+	 * @return Requested String.
+	 */
+	public String getLocaleString(final Player player, final String path) {
+		String locale = GloPvP.locale.getString("users."
+				+ player.getUniqueId().toString() + ".language");
+
+		if (config.getString(locale + "." + path) == null) {
+			locale = GloPvP.locale.getString("general.defaultLanguage");
+			if (config.getString(locale + "." + path) == null) {
+				Messager.sendMessage(player, Level.SEVERE, GloPvP.messages,
+						"messager.missingValue", true,"setting", path, "config",
+						configName);
+				return null;
+			}
+		}
+
+		if (GloPvP.locale.getBoolean("general.forceLanguage")) {
+			if (config.getString(GloPvP.locale
+					.getString("general.defaultLanguage") + "." + path) == null) {
+				locale = "GB";
+			} else {
+				GloPvP.locale.getString("general.defaultLanguage");
+			}
+		}
+
+		return config.getString(locale + "." + path);
+	}
+
+	/**
 	 * Gets the requested String by path.<br>
 	 * If the String does not exist but a default value has been specified, this
 	 * will return the default value.<br>
@@ -162,11 +202,11 @@ public class Config {
 		if (!configFile.exists()) {
 			if (GloPvP.plugin.getResource(configName) == null) {
 				GloPvP.plugin
-						.getLogger()
-				.log(Level.SEVERE,
-						"The file "
-								+ configName
-								+ " is missing the the resource folder. Contact the developer for help");
+				.getLogger()
+						.log(Level.SEVERE,
+								"The file "
+										+ configName
+										+ " is missing the the resource folder. Contact the developer for help");
 				return;
 			}
 

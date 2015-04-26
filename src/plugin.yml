@@ -4,9 +4,17 @@ description: A kit plugin made for thejust219.
 load: POSTWORLD
 authors:
   - Steffion
-#website: http://
 main: nl.Steffion.GloPvP.GloPvP
-database: false
-#depend: [OnePlugin, AnotherPlugin]
-#softdepend: [OnePlugin, AnotherPlugin]
-#loadbefore: [OnePlugin, AnotherPlugin]
+commands:
+  glopvp:
+    description: Main command for the plugin.
+  shop:
+    description: Shop command for the plugin. This will open the upgrade menu.
+permissions:
+  glopvp.*:
+      description: Gives you all the permissions for GloPvP
+      children:
+          glopvp.main: true
+  glopvp.save:
+      description: Allows you to use the save command.
+      default: op

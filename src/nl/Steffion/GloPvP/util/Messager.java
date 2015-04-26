@@ -4,6 +4,7 @@ import java.util.logging.Level;
 
 import nl.Steffion.GloPvP.GloPvP;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -18,7 +19,8 @@ public class Messager implements Listener {
 	 * @return Colour replaced message.
 	 */
 	public static String replaceColours(final String message) {
-		return message.replaceAll("(&([a-fk-or0-9]))", "\u00A7$2");
+		return message.replaceAll("&tag", GloPvP.config.getString("tag"))
+				.replaceAll("(&([a-fk-or0-9]))", "\u00A7$2");
 	}
 
 	/**
@@ -30,6 +32,8 @@ public class Messager implements Listener {
 	 *            - The config file to get the message from.
 	 * @param path
 	 *            - The path in the messages file.
+	 * @param feedback
+	 *            - Send message to other admins.
 	 * @param replaceVars
 	 *            - OPTIONAL Replace one or more variables in the message. Use
 	 *            '%name%' in the config files.<br>
@@ -37,15 +41,16 @@ public class Messager implements Listener {
 	 *            "name", test.getName()
 	 */
 	public static void sendConsoleMessage(final Level level,
-			final Config config, final String path, final String... replaceVars) {
+			final Config config, final String path, final Boolean feedback,
+			final String... replaceVars) {
 		String locale = GloPvP.locale.getString("users.CONSOLE.language");
 
 		if (config.getString(locale + "." + path) == null) {
 			locale = GloPvP.locale.getString("general.defaultLanguage");
 			if (config.getString(locale + "." + path) == null) {
 				Messager.sendConsoleMessage(Level.SEVERE, GloPvP.messages,
-						"messager.missingValue", "setting", path, "config",
-						config.configName);
+						"messager.missingValue", true, "setting", path,
+						"config", config.configName);
 				return;
 			}
 		}
@@ -59,31 +64,41 @@ public class Messager implements Listener {
 			}
 		}
 
-		String message = config.getString(locale + "." + path).replaceAll(
-				"(&([a-fk-or0-9]))", "");
+		String message = config.getString(locale + "." + path)
+				;
 
 		if (replaceVars != null) {
 			Integer counter = 0;
 
 			for (int i = 0; i < (replaceVars.length / 2); i++) {
 				message = message.replaceAll("%" + replaceVars[counter] + "%",
-						replaceVars[counter + 1]);
+						replaceVars[counter + 1].replaceAll("&tag", "")
+						.replaceAll("(&([a-fk-or0-9]))", ""));
 				counter = counter + 2;
 			}
 		}
 
-		GloPvP.plugin.getLogger().log(level, message);
+		GloPvP.plugin.getLogger().log(level, message.replaceAll("&tag", "").replaceAll("(&([a-fk-or0-9]))", ""));
+		if (feedback) {
+			for (final Player player : Bukkit.getOnlinePlayers()) {
+				if (player.hasPermission("bukkit.broadcast.admin")) {
+					player.sendMessage(Messager.replaceColours("&7&o[Server: "
+							+ message + "&7&o]"));
+				}
+			}
+		}
 	}
 
 	/**
 	 * Send a locale message to a player.<br>
-	 * <br>
-	 * <b>DO NOT</b> use this method to send to the console.<br>
-	 * Use {@link #sendConsoleMessage(Level, Config, String, String...)}
-	 * instead.
 	 *
 	 * @param player
-	 *            - The player to send the locale message to.
+	 *            - The player to send the locale message to.<br>
+	 *            Entering null will send it to console. Use
+	 *            {@link #sendConsoleMessage(Level, Config, String, String...)}
+	 *            to send directly to console.
+	 * @param level
+	 *            - Level of message the console will receive
 	 * @param config
 	 *            - The config file to get the message from.
 	 * @param path
@@ -94,11 +109,12 @@ public class Messager implements Listener {
 	 *            It replaces the first value with the second value, e.g.:
 	 *            "name", test.getName()
 	 */
-	public static void sendMessage(final Player player, final Config config,
-			final String path, final String... replaceVars) {
+	public static void sendMessage(final Player player, final Level level,
+			final Config config, final String path, final Boolean feedback,
+			final String... replaceVars) {
 		if (player == null) {
-			Messager.sendConsoleMessage(Level.SEVERE, GloPvP.messages,
-					"messager.wrongMethod");
+			Messager.sendConsoleMessage(level, config, path, feedback,
+					replaceVars);
 			return;
 		}
 
@@ -108,9 +124,9 @@ public class Messager implements Listener {
 		if (config.getString(locale + "." + path) == null) {
 			locale = GloPvP.locale.getString("general.defaultLanguage");
 			if (config.getString(locale + "." + path) == null) {
-				Messager.sendMessage(player, GloPvP.messages,
-						"messager.missingValue", "setting", path, "config",
-						config.configName);
+				Messager.sendMessage(player, Level.SEVERE, GloPvP.messages,
+						"messager.missingValue", true, "setting", path,
+						"config", config.configName);
 				return;
 			}
 		}
@@ -137,6 +153,16 @@ public class Messager implements Listener {
 		}
 
 		player.sendMessage(Messager.replaceColours(message));
+		if (feedback) {
+			GloPvP.plugin.getLogger().log(Level.INFO,
+					"[" + player.getName() + ": " + message.replaceAll("&tag", "").replaceAll("(&([a-fk-or0-9]))", "") + "]");
+			for (final Player otherPlayer : Bukkit.getOnlinePlayers()) {
+				if (otherPlayer != player && otherPlayer.hasPermission("bukkit.broadcast.admin")) {
+					otherPlayer.sendMessage(Messager.replaceColours("&7&o["
+							+ player.getName() + ": " + message + "&7&o]"));
+				}
+			}
+		}
 	}
 
 	/*
