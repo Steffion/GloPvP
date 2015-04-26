@@ -225,9 +225,6 @@ public class GloPvP extends JavaPlugin {
 			}
 		}
 
-		Messager.sendMessage(player, Level.SEVERE, GloPvP.messages, "usage",
-				false, "command",
-				"glopvp <list|save|delete|sign|select> [kitname]");
 		return true;
 	}
 
@@ -235,7 +232,7 @@ public class GloPvP extends JavaPlugin {
 	public void onDisable() {
 		Messager.sendConsoleMessage(Level.INFO, GloPvP.messages,
 				"onDisable.author", true, "author", GloPvP.pdf.getAuthors()
-				.get(0));
+						.get(0));
 	}
 
 	@Override
@@ -252,8 +249,8 @@ public class GloPvP extends JavaPlugin {
 		Bukkit.getPluginManager().registerEvents(new Messager(), this);
 
 		Messager.sendConsoleMessage(Level.INFO, GloPvP.messages,
-				"onEnable.author", false, "author",
-				GloPvP.pdf.getAuthors().get(0));
+				"onEnable.author", false, "author", GloPvP.pdf.getAuthors()
+						.get(0));
 		Messager.sendConsoleMessage(Level.INFO, GloPvP.messages,
 				"onEnable.finished", true, "name", GloPvP.pdf.getName(),
 				"version", GloPvP.pdf.getVersion());
