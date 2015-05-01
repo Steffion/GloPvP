@@ -1,32 +1,115 @@
 Example:
   name: Example
-  boots:
-    ==: org.bukkit.inventory.ItemStack
-    type: LEATHER_BOOTS
-  leggings:
-    ==: org.bukkit.inventory.ItemStack
-    type: LEATHER_LEGGINGS
-  chestplate:
-    ==: org.bukkit.inventory.ItemStack
-    type: LEATHER_CHESTPLATE
-  helmet:
-    ==: org.bukkit.inventory.ItemStack
-    type: LEATHER_HELMET
-  '36':
-    ==: org.bukkit.inventory.ItemStack
-    type: LEATHER_BOOTS
-  '28':
-    ==: org.bukkit.inventory.ItemStack
-    type: ARROW
+  '5':
+    boots:
+      ==: org.bukkit.inventory.ItemStack
+      type: LEATHER_BOOTS
+    leggings:
+      ==: org.bukkit.inventory.ItemStack
+      type: LEATHER_LEGGINGS
+    chestplate:
+      ==: org.bukkit.inventory.ItemStack
+      type: LEATHER_CHESTPLATE
+    helmet:
+      ==: org.bukkit.inventory.ItemStack
+      type: LEATHER_HELMET
+    '36':
+      ==: org.bukkit.inventory.ItemStack
+      type: LEATHER_BOOTS
+    '28':
+      ==: org.bukkit.inventory.ItemStack
+      type: ARROW
+    '1':
+      ==: org.bukkit.inventory.ItemStack
+      type: BOW
+      meta:
+        ==: ItemMeta
+        meta-type: UNSPECIFIC
+        enchants:
+          ARROW_INFINITE: 1
+        repair-cost: 1
+    '0':
+      ==: org.bukkit.inventory.ItemStack
+      type: IRON_SWORD
+  '4':
+    leggings:
+      ==: org.bukkit.inventory.ItemStack
+      type: LEATHER_LEGGINGS
+    chestplate:
+      ==: org.bukkit.inventory.ItemStack
+      type: LEATHER_CHESTPLATE
+    helmet:
+      ==: org.bukkit.inventory.ItemStack
+      type: LEATHER_HELMET
+    '28':
+      ==: org.bukkit.inventory.ItemStack
+      type: ARROW
+    '1':
+      ==: org.bukkit.inventory.ItemStack
+      type: BOW
+      meta:
+        ==: ItemMeta
+        meta-type: UNSPECIFIC
+        enchants:
+          ARROW_INFINITE: 1
+        repair-cost: 1
+    '0':
+      ==: org.bukkit.inventory.ItemStack
+      type: STONE_SWORD
+  '3':
+    chestplate:
+      ==: org.bukkit.inventory.ItemStack
+      type: LEATHER_CHESTPLATE
+    helmet:
+      ==: org.bukkit.inventory.ItemStack
+      type: LEATHER_HELMET
+    '28':
+      ==: org.bukkit.inventory.ItemStack
+      type: ARROW
+    '1':
+      ==: org.bukkit.inventory.ItemStack
+      type: BOW
+      meta:
+        ==: ItemMeta
+        meta-type: UNSPECIFIC
+        enchants:
+          ARROW_INFINITE: 1
+        repair-cost: 1
+    '0':
+      ==: org.bukkit.inventory.ItemStack
+      type: STONE_SWORD
+  '2':
+    helmet:
+      ==: org.bukkit.inventory.ItemStack
+      type: LEATHER_HELMET
+    '28':
+      ==: org.bukkit.inventory.ItemStack
+      type: ARROW
+    '1':
+      ==: org.bukkit.inventory.ItemStack
+      type: BOW
+      meta:
+        ==: ItemMeta
+        meta-type: UNSPECIFIC
+        enchants:
+          ARROW_INFINITE: 1
+        repair-cost: 1
+    '0':
+      ==: org.bukkit.inventory.ItemStack
+      type: WOOD_SWORD
   '1':
-    ==: org.bukkit.inventory.ItemStack
-    type: BOW
-    meta:
-      ==: ItemMeta
-      meta-type: UNSPECIFIC
-      enchants:
-        ARROW_INFINITE: 1
-      repair-cost: 1
-  '0':
-    ==: org.bukkit.inventory.ItemStack
-    type: IRON_SWORD
+    '28':
+      ==: org.bukkit.inventory.ItemStack
+      type: ARROW
+    '1':
+      ==: org.bukkit.inventory.ItemStack
+      type: BOW
+      meta:
+        ==: ItemMeta
+        meta-type: UNSPECIFIC
+        enchants:
+          ARROW_INFINITE: 1
+        repair-cost: 1
+    '0':
+      ==: org.bukkit.inventory.ItemStack
+      type: WOOD_SWORD
